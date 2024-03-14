@@ -10,7 +10,7 @@ router.get('/categories/:id', getSigleCategory);
 
 router.post('/categories', createCategory);
 
-router.delete('/categories',deleteCategory);
+router.delete('/categories/:id',deleteCategory);
 
 router.put('/categories',updateCategory);
 

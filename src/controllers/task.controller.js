@@ -10,7 +10,7 @@ const getAllCategories = async (req, res) => {
     }
 };
 
-const getSigleCategory = async (req, res) => { 
+const getSigleCategory = async (req, res) => {
     try {
         const { id } = req.params;
         const result = await pool.query('SELECT * FROM categories WHERE id_cat = $1', [id]);
@@ -41,7 +41,15 @@ const createCategory = async (req, res) => {
 };
 
 const deleteCategory = async (req, res) => {
-    res.send('deleting a category')
+    const { id } = req.params;
+
+    const result = await pool.query('DELETE FROM categories WHERE id_cat = $1', [id]);
+    if (result.rowCount === 0)
+        return res.status(404).json({
+            message: 'Category not found'
+        });
+
+    return res.sendStatus(204);
 };
 
 const updateCategory = async (req, res) => {
