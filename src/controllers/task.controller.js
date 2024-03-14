@@ -53,8 +53,19 @@ const deleteCategory = async (req, res) => {
 };
 
 const updateCategory = async (req, res) => {
-    res.send('updating a category')
-}
+
+    const { id } = req.params;
+    const { nombre, articles, image } = req.body;
+
+    const result = await pool.query('UPDATE categories SET nombre = $1, articles = $2, image = $3 WHERE id_cat = $4 RETURNING *', [nombre, articles, image, id]);
+
+    if (result.rows.length === 0)
+        return res.status(404).json({
+            message: 'Category not found',
+        })
+
+    return res.json(result.rows[0]);
+};
 
 module.exports = {
     getAllCategories,

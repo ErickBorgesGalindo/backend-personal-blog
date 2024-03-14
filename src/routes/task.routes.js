@@ -12,7 +12,7 @@ router.post('/categories', createCategory);
 
 router.delete('/categories/:id',deleteCategory);
 
-router.put('/categories',updateCategory);
+router.put('/categories/:id',updateCategory);
 
 //---------- Writers 
 // router.get('/writers',(req, res) => {
