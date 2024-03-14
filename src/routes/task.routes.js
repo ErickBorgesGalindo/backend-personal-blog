@@ -1,28 +1,18 @@
 const {Router} = require('express');
-
+const { getAllCategories, getSigleCategory, createCategory, deleteCategory, updateCategory } = require('../controllers/task.controller');
 const router = Router();
 
 
 //---------- Categories 
-router.get('/categories', async (req, res) => {
-    res.send('retrieving a list of categories')
-});
+router.get('/categories', getAllCategories );
 
-router.get('/categories/1',(req, res) => {
-    res.send('retrieving a sigle categories')
-});
+router.get('/categories/1', getSigleCategory);
 
-router.post('/categories',(req, res) => {
-    res.send('creating a category')
-});
+router.post('/categories', createCategory);
 
-router.delete('/categories',(req, res) => {
-    res.send('deleting a category')
-});
+router.delete('/categories',deleteCategory);
 
-router.put('/categories',(req, res) => {
-    res.send('updating a category')
-});
+router.put('/categories',updateCategory);
 
 //---------- Writers 
 // router.get('/writers',(req, res) => {
