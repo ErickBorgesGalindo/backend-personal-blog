@@ -1,4 +1,6 @@
-const getAllCategories =async (req, res) => {
+const pool = require('../db');
+
+const getAllCategories = async (req, res) => {
     res.send('retrieving a list of categories')
 };
 
@@ -7,14 +9,26 @@ const getSigleCategory = async (req, res) => {
 };
 
 const createCategory = async (req, res) => {
-    res.send('creating a category')
+    const { nombre, articles, image } = req.body;
+
+    try {
+        const result = await pool.query(
+            'INSERT INTO categories (nombre, articles, image) VALUES ($1, $2, $3) RETURNING *',
+            [
+                nombre, articles, image
+            ]);
+
+        res.json(result.rows[0]);
+    } catch (error) {
+        res.json({error: error,message});
+    };
 };
 
-const deleteCategory = async(req, res) => {
+const deleteCategory = async (req, res) => {
     res.send('deleting a category')
 };
 
-const updateCategory = async(req, res) => {
+const updateCategory = async (req, res) => {
     res.send('updating a category')
 }
 
