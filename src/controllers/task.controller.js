@@ -10,8 +10,18 @@ const getAllCategories = async (req, res) => {
     }
 };
 
-const getSigleCategory = async (req, res) => {
-    res.send('retrieving a sigle categories')
+const getSigleCategory = async (req, res) => { 
+    try {
+        const { id } = req.params;
+        const result = await pool.query('SELECT * FROM categories WHERE id_cat = $1', [id]);
+        if (result.rows.length === 0) return res.status(404).json({
+            message: "category not found",
+        });
+
+        return res.json(result.rows[0]);
+    } catch (error) {
+        console.log(error.message);
+    }
 };
 
 const createCategory = async (req, res) => {

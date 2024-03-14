@@ -6,7 +6,7 @@ const router = Router();
 //---------- Categories 
 router.get('/categories', getAllCategories );
 
-router.get('/categories/1', getSigleCategory);
+router.get('/categories/:id', getSigleCategory);
 
 router.post('/categories', createCategory);
 
