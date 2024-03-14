@@ -1,7 +1,13 @@
 const pool = require('../db');
 
 const getAllCategories = async (req, res) => {
-    res.send('retrieving a list of categories')
+    try {
+        const allCategories = await pool.query('SELECT * FROM categories');
+        res.json(allCategories.rows);
+    } catch (error) {
+        console.log(error);
+        res.json({ error: error, message });
+    }
 };
 
 const getSigleCategory = async (req, res) => {
@@ -20,7 +26,7 @@ const createCategory = async (req, res) => {
 
         res.json(result.rows[0]);
     } catch (error) {
-        res.json({error: error,message});
+        res.json({ error: error, message });
     };
 };
 
