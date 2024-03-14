@@ -1,16 +1,15 @@
 const pool = require('../db');
 
-const getAllCategories = async (req, res) => {
+const getAllCategories = async (req, res, next) => {
     try {
         const allCategories = await pool.query('SELECT * FROM categories');
         res.json(allCategories.rows);
     } catch (error) {
-        console.log(error);
-        res.json({ error: error, message });
+        next(error);
     }
 };
 
-const getSigleCategory = async (req, res) => {
+const getSigleCategory = async (req, res, next) => {
     try {
         const { id } = req.params;
         const result = await pool.query('SELECT * FROM categories WHERE id_cat = $1', [id]);
@@ -20,11 +19,11 @@ const getSigleCategory = async (req, res) => {
 
         return res.json(result.rows[0]);
     } catch (error) {
-        console.log(error.message);
+        next(error);
     }
 };
 
-const createCategory = async (req, res) => {
+const createCategory = async (req, res, next) => {
     const { nombre, articles, image } = req.body;
 
     try {
@@ -36,35 +35,43 @@ const createCategory = async (req, res) => {
 
         res.json(result.rows[0]);
     } catch (error) {
-        res.json({ error: error, message });
+        next(error);
     };
 };
 
-const deleteCategory = async (req, res) => {
+const deleteCategory = async (req, res, next) => {
     const { id } = req.params;
 
-    const result = await pool.query('DELETE FROM categories WHERE id_cat = $1', [id]);
-    if (result.rowCount === 0)
-        return res.status(404).json({
-            message: 'Category not found'
-        });
+    try {
+        const result = await pool.query('DELETE FROM categories WHERE id_cat = $1', [id]);
+        if (result.rowCount === 0)
+            return res.status(404).json({
+                message: 'Category not found'
+            });
 
-    return res.sendStatus(204);
+        return res.sendStatus(204);
+    } catch (error) {
+        next(error);
+    }
 };
 
-const updateCategory = async (req, res) => {
+const updateCategory = async (req, res, next) => {
 
     const { id } = req.params;
     const { nombre, articles, image } = req.body;
 
-    const result = await pool.query('UPDATE categories SET nombre = $1, articles = $2, image = $3 WHERE id_cat = $4 RETURNING *', [nombre, articles, image, id]);
+    try {
+        const result = await pool.query('UPDATE categories SET nombre = $1, articles = $2, image = $3 WHERE id_cat = $4 RETURNING *', [nombre, articles, image, id]);
 
-    if (result.rows.length === 0)
-        return res.status(404).json({
-            message: 'Category not found',
-        })
+        if (result.rows.length === 0)
+            return res.status(404).json({
+                message: 'Category not found',
+            })
 
-    return res.json(result.rows[0]);
+        return res.json(result.rows[0]);
+    } catch (error) {
+        next(error);
+    }
 };
 
 module.exports = {
