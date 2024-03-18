@@ -8,5 +8,8 @@ module.exports = {
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
         database: process.env.DB_DATABASE,
+    },
+    jsonwt:{
+        JWT_SECRET : process.env.JWT_SECRET,
     }
 }
