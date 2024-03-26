@@ -24,13 +24,13 @@ const getSigleCategory = async (req, res, next) => {
 };
 
 const createCategory = async (req, res, next) => {
-    const { nombre, articles, image } = req.body;
+    const { cat_name, articles, image } = req.body;
 
     try {
         const result = await pool.query(
-            'INSERT INTO categories (nombre, articles, image) VALUES ($1, $2, $3) RETURNING *',
+            'INSERT INTO categories (cat_name, articles, image) VALUES ($1, $2, $3) RETURNING *',
             [
-                nombre, articles, image
+                cat_name, articles, image
             ]);
 
         res.json(result.rows[0]);
@@ -58,10 +58,10 @@ const deleteCategory = async (req, res, next) => {
 const updateCategory = async (req, res, next) => {
 
     const { id } = req.params;
-    const { nombre, articles, image } = req.body;
+    const { cat_name, articles, image } = req.body;
 
     try {
-        const result = await pool.query('UPDATE categories SET nombre = $1, articles = $2, image = $3 WHERE id_cat = $4 RETURNING *', [nombre, articles, image, id]);
+        const result = await pool.query('UPDATE categories SET cat_name = $1, articles = $2, image = $3 WHERE id_cat = $4 RETURNING *', [cat_name, articles, image, id]);
 
         if (result.rows.length === 0)
             return res.status(404).json({
